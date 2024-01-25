@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041268964152",
+    "project_id": "insochat-2525a",
+    "storage_bucket": "insochat-2525a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041268964152:android:151fd25c28558080bedfcd",
+        "android_client_info": {
+          "package_name": "com.example.inso_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBedDFp6jJj857wNFtTHuxxbMJ7l6__RTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

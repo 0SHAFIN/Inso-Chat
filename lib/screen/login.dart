@@ -3,6 +3,8 @@ import 'package:inso_chat/component/assets/colors.dart';
 import 'package:inso_chat/component/inputField.dart';
 import 'package:inso_chat/component/roundnutton.dart';
 import 'package:inso_chat/component/routs/routename.dart';
+import 'package:inso_chat/services/loginServices.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -129,15 +131,19 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: height * .15,
                 ),
-                roundButton(
-                  hint: "Log In",
-                  onTap: () {
-                    if (formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, RouteName.homeScreen);
-                      print("Validated");
-                    }
-                  },
-                ),
+                ChangeNotifierProvider(
+                    create: (context) => login(),
+                    child: Consumer<login>(
+                      builder: (context, value, child) => roundButton(
+                          hint: "Login",
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              value.logins(context, emailController.text,
+                                  passwordController.text);
+                            }
+                          },
+                          loading: value.loading),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

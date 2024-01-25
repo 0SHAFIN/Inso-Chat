@@ -30,7 +30,11 @@ class _roundButtonState extends State<roundButton> {
           color: Clr.primaryButton,
         ),
         child: widget.loading == true
-            ? const CircularProgressIndicator()
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

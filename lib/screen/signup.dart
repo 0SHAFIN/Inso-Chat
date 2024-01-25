@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:inso_chat/component/assets/colors.dart';
 import 'package:inso_chat/component/inputField.dart';
 import 'package:inso_chat/component/roundnutton.dart';
+import 'package:inso_chat/services/loginServices.dart';
+import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -32,6 +34,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    bool loading = false;
     var fName = TextEditingController();
     var lName = TextEditingController();
     var email = TextEditingController();
@@ -266,13 +269,28 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: height * .15,
                 ),
-                roundButton(
-                    hint: "Sign Up",
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        print("Validated");
-                      }
-                    }),
+                ChangeNotifierProvider(
+                    create: (context) => login(),
+                    child: Consumer<login>(builder: (context, value, child) {
+                      return roundButton(
+                        icon: Icons.person,
+                        hint: "Sign Up",
+                        onTap: () {
+                          if (formKey.currentState!.validate()) {
+                            value.signUp(
+                                context,
+                                fName.text,
+                                lName.text,
+                                phone.text,
+                                _selectedGender.toString(),
+                                selectedDate,
+                                email.text,
+                                password.text);
+                          }
+                        },
+                        loading: value.loading,
+                      );
+                    })),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

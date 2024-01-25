@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inso_chat/component/routs/routename.dart';
 
@@ -15,7 +17,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    var currentUser = FirebaseAuth.instance.currentUser;
+    Timer(Duration(seconds: 3), () {
       Navigator.pushNamed(context, RouteName.loginScreen);
     });
   }

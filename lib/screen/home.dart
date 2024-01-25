@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inso_chat/component/assets/colors.dart';
 import 'package:inso_chat/component/routs/routename.dart';
+import 'package:inso_chat/services/utils.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -56,7 +59,12 @@ class _HomeState extends State<Home> {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.pushNamed(context, RouteName.loginScreen);
+                  var auth = FirebaseAuth.instance;
+                  auth.signOut().then((value) {
+                    Navigator.pushNamed(context, RouteName.loginScreen);
+                  }).onError((error, stackTrace) {
+                    Utils.showMessage(error.toString());
+                  });
                 },
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),
