@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
     var height = MediaQuery.of(context).size.height * .1;
     var width = MediaQuery.of(context).size.width * .1;
     return Scaffold(
+        appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
             children: [
