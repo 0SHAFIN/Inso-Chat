@@ -14,11 +14,9 @@ class SignUp extends StatefulWidget {
 
 enum Gender { male, female }
 
-Gender? _selectedGender;
-
 class _SignUpState extends State<SignUp> {
   var selectedDate;
-
+  var _selectedGender;
   void pickedDate() async {
     DateTime? date = await showDatePicker(
             context: context,
@@ -32,17 +30,16 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  bool loading = false;
+  var fName = TextEditingController();
+  var lName = TextEditingController();
+  var email = TextEditingController();
+  var password = TextEditingController();
+  var confirmPassword = TextEditingController();
+  var phone = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    bool loading = false;
-    var fName = TextEditingController();
-    var lName = TextEditingController();
-    var email = TextEditingController();
-    var password = TextEditingController();
-    var confirmPassword = TextEditingController();
-    var phone = TextEditingController();
-    var formKey = GlobalKey<FormState>();
-
     var height = MediaQuery.of(context).size.height * .1;
     var width = MediaQuery.of(context).size.width * .1;
     return Scaffold(
@@ -59,14 +56,14 @@ class _SignUpState extends State<SignUp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Sign Up",
+                      "Sign Up/",
                       style: TextStyle(
                           color: Clr.primaryButton,
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "/ Log In",
+                      " Log In",
                       style: TextStyle(
                         color: Clr.alterlogin,
                         fontSize: 28,
@@ -135,29 +132,35 @@ class _SignUpState extends State<SignUp> {
                         color: Clr.inputfieldFiller,
                       ),
                       child: Row(
-                        children: [
+                        children: <Widget>[
                           Expanded(
-                            child: RadioListTile<Gender>(
+                            child: ListTile(
                               title: const Text('Male'),
-                              value: Gender.male,
-                              groupValue: _selectedGender,
-                              onChanged: (Gender? value) {
-                                setState(() {
-                                  _selectedGender = value;
-                                });
-                              },
+                              leading: Radio<String>(
+                                value: "Male",
+                                groupValue: _selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedGender = value;
+                                    print(_selectedGender);
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Expanded(
-                            child: RadioListTile<Gender>(
+                            child: ListTile(
                               title: const Text('Female'),
-                              value: Gender.female,
-                              groupValue: _selectedGender,
-                              onChanged: (Gender? value) {
-                                setState(() {
-                                  _selectedGender = value;
-                                });
-                              },
+                              leading: Radio<String>(
+                                value: "female",
+                                groupValue: _selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedGender = value;
+                                    print(_selectedGender);
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ],

@@ -3,6 +3,7 @@ import 'package:inso_chat/component/assets/colors.dart';
 import 'package:inso_chat/component/inputField.dart';
 import 'package:inso_chat/component/roundnutton.dart';
 import 'package:inso_chat/component/routs/routename.dart';
+import 'package:inso_chat/screen/testSignup.dart';
 import 'package:inso_chat/services/loginServices.dart';
 import 'package:provider/provider.dart';
 
@@ -153,6 +154,10 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                         onPressed: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => TesstSignup()));
                           Navigator.pushNamed(context, RouteName.signupScreen);
                         },
                         child: const Text(
