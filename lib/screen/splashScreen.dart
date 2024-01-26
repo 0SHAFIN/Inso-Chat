@@ -19,9 +19,15 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     var currentUser = FirebaseAuth.instance.currentUser;
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, RouteName.loginScreen);
-    });
+    if (currentUser != null) {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushNamed(context, RouteName.homeScreen);
+      });
+    } else {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushNamed(context, RouteName.loginScreen);
+      });
+    }
   }
 
   @override

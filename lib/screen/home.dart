@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inso_chat/component/assets/colors.dart';
 import 'package:inso_chat/component/routs/routename.dart';
+import 'package:inso_chat/screen/chatSscreen.dart';
 import 'package:inso_chat/services/utils.dart';
 
 class Home extends StatefulWidget {
@@ -13,6 +15,27 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String? name;
+  String? email;
+
+  void getInfo() async {
+    var userId = FirebaseAuth.instance.currentUser!.uid;
+    var ref = FirebaseFirestore.instance.collection("Users");
+    await ref.doc(userId).get().then((value) {
+      setState(() {
+        name = value.data()!["Name"];
+        email = value.data()!["email"];
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height * .1;
@@ -37,19 +60,22 @@ class _HomeState extends State<Home> {
                         color: Colors.white,
                       ),
                     ),
-                    title: const Text(
-                      "Tafsirul Islam Shafin",
+                    title: Text(
+                      "${name ?? 'N/A'}",
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    subtitle: const Text(
-                      "Shafin@gmail.com",
+                    subtitle: Text(
+                      "${email ?? 'N/A'}",
                       style: TextStyle(fontSize: 13, color: Colors.white),
                     ),
                   )),
               SizedBox(
                 height: height * .2,
               ),
-              const ListTile(
+              ListTile(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteName.profileScreen);
+                },
                 leading: Icon(Icons.person),
                 title: Text("Profile"),
               ),
@@ -79,13 +105,6 @@ class _HomeState extends State<Home> {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 25,
-                    child: Icon(Icons.person),
-                  ),
-                  SizedBox(
-                    width: width * .3,
-                  ),
                   Expanded(
                     child: TextFormField(
                       decoration: InputDecoration(
@@ -102,19 +121,56 @@ class _HomeState extends State<Home> {
                 height: height * .12,
               ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return const ListTile(
-                        leading: CircleAvatar(
-                          radius: 25,
-                          child: Icon(Icons.person),
-                        ),
-                        title: Text("Tafsirul Islam Shafin"),
-                        subtitle: Text("Hello"),
-                        trailing: Text("12:00"),
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Users")
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data!.docs[index];
+                            if (FirebaseAuth.instance.currentUser!.uid !=
+                                data.id) {
+                              return ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ChatScreen(
+                                                reciverId: data.id,
+                                                reciverName: data["Name"],
+                                                reciveremail: data["email"],
+                                              )));
+                                },
+                                leading: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Clr.primaryButton, width: 2),
+                                      shape: BoxShape.circle),
+                                  child: const Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Clr.primaryButton,
+                                  ),
+                                ),
+                                title: Text(data["Name"]),
+                                subtitle: Text(data["email"]),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          });
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }),
+                    }
+                  },
+                ),
               ),
             ],
           ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inso_chat/component/routs/routename.dart';
+import 'package:inso_chat/screen/chatSscreen.dart';
 import 'package:inso_chat/screen/home.dart';
 import 'package:inso_chat/screen/login.dart';
+import 'package:inso_chat/screen/profile.dart';
 import 'package:inso_chat/screen/signup.dart';
 import 'package:inso_chat/screen/splashScreen.dart';
 
@@ -16,6 +18,10 @@ class Routs {
         return MaterialPageRoute(builder: (context) => const SignUp());
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (context) => const Home());
+      case RouteName.profileScreen:
+        return MaterialPageRoute(builder: (context) => const Profile());
+      case RouteName.chatScreen:
+        return MaterialPageRoute(builder: (context) => ChatScreen());
 
       default:
         return MaterialPageRoute(
